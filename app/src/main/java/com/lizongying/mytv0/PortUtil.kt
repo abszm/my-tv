@@ -9,16 +9,15 @@ object PortUtil {
 
     fun findFixedPort(): Int {
         val fixedPort = 36185
-        var port = -1
-        try {
+        return try {
             // 使用指定端口创建 ServerSocket
             ServerSocket(fixedPort).use { socket ->
-                port = socket.localPort
+                socket.localPort
             }
         } catch (e: IOException) {
-            e.printStackTrace()
+            // 如果端口不可用，则返回-1表示错误
+            -1
         }
-        return port
     }
 
     fun lan(): String? {
@@ -27,10 +26,7 @@ object PortUtil {
             val inetAddresses = networkInterfaces.nextElement().inetAddresses
             while (inetAddresses.hasMoreElements()) {
                 val inetAddress = inetAddresses.nextElement()
-                if (inetAddress is Inet4Address) {
-                    if (inetAddress.hostAddress == "127.0.0.1") {
-                        continue
-                    }
+                if (inetAddress is Inet4Address && inetAddress.hostAddress != "127.0.0.1") {
                     return inetAddress.hostAddress
                 }
             }
