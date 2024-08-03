@@ -5,22 +5,19 @@ import java.net.Inet4Address
 import java.net.NetworkInterface
 import java.net.ServerSocket
 
-object PortUtil {
+    object PortUtil {
 
     fun findFreePort(): Int {
-        var port = 36185
+        var port = -1
         try {
-            ServerSocket(port).use { socket ->
-                // 如果成功绑定到端口，返回该端口
+            ServerSocket(0).use { socket ->
+                port = socket.localPort
             }
         } catch (e: IOException) {
             e.printStackTrace()
-            // 如果绑定失败，返回-1
-            return -1
         }
         return port
     }
-}
 
     fun lan(): String? {
         val networkInterfaces = NetworkInterface.getNetworkInterfaces()
@@ -38,3 +35,4 @@ object PortUtil {
         }
         return null
     }
+}
