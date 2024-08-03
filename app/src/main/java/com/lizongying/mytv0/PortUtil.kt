@@ -1,23 +1,26 @@
-package com.lizongying.mytv0
+package com.lizongying.mytv0;
 
-import java.io.IOException
-import java.net.Inet4Address
-import java.net.NetworkInterface
-import java.net.ServerSocket
+import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.NetworkInterface;
+import java.net.ServerSocket;
 
-    object PortUtil {
+object PortUtil {
 
     fun findFreePort(): Int {
-        var port = -1
+        var port = 36186
         try {
-            ServerSocket(0).use { socket ->
-                port = socket.localPort
+            ServerSocket(port).use { socket ->
+                // 如果成功绑定到端口，返回该端口
             }
         } catch (e: IOException) {
             e.printStackTrace()
+            // 如果绑定失败，返回-1
+            return -1
         }
         return port
     }
+}
 
     fun lan(): String? {
         val networkInterfaces = NetworkInterface.getNetworkInterfaces()
@@ -33,6 +36,3 @@ import java.net.ServerSocket
                 }
             }
         }
-        return null
-    }
-}
