@@ -7,21 +7,18 @@ import java.net.ServerSocket
 
 object PortUtil {
 
-    fun findFreePort(): Int {
-        return try {
-            ServerSocket(36185).use { socket ->
-                socket.localPort
+    fun findFixedPort(): Int {
+        val fixedPort = 36185
+        var port = -1
+        try {
+            // 使用指定端口创建 ServerSocket
+            ServerSocket(fixedPort).use { socket ->
+                port = socket.localPort
             }
         } catch (e: IOException) {
-            try {
-                ServerSocket(0).use { socket ->
-                    socket.localPort
-                }
-            } catch (e: IOException) {
-                e.printStackTrace()
-                -1 // Return -1 to indicate an error
-            }
+            e.printStackTrace()
         }
+        return port
     }
 
     fun lan(): String? {
